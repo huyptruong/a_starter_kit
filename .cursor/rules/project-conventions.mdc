@@ -1,0 +1,18 @@
+---
+description: Project structure and where to put code (UI, services, integrations, prompts)
+alwaysApply: true
+---
+
+# Project conventions
+
+This is a layered Python AI template. Keep code in the right layer:
+
+- **app.py** — UI only. Streamlit (or FastAPI/CLI) entrypoint. No business logic; delegate to services.
+- **src/services/** — Business logic and workflows. One module per feature (e.g. generate_text). Call integrations, not external APIs directly.
+- **src/integrations/** — External systems only: LLM APIs, database, email, etc. No business rules.
+- **src/prompts/** — App-level AI prompt templates (files or strings). Keep prompts out of service code when possible.
+- **src/db/** — Optional: schema, migrations, or DB helpers. This template currently keeps SQLite in integrations.
+- **src/utils/** — Shared helpers (formatting, parsing). No domain logic.
+- **src/config.py** — Configuration and env vars. Single place for settings.
+
+Prefer readable code. Add tests for important logic. Run tests with: `pytest` (from project root).
