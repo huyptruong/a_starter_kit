@@ -9,19 +9,17 @@ load_dotenv()
 APP_TITLE = os.getenv("APP_TITLE", "Python AI Starter Template")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
-
 @st.cache_data(show_spinner=False)
 def fetch_reply(prompt: str) -> str:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError("Set OPENAI_API_KEY in `.env` (see `.env.example`).")
     client = OpenAI(api_key=api_key)
-    r = client.chat.completions.create(
+    r = client.responses.create(
         model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": prompt}],
+        input=prompt,
     )
-    return r.choices[0].message.content or ""
-
+    return r.output_text or ""
 
 st.set_page_config(page_title=APP_TITLE, layout="centered")
 st.title(APP_TITLE)
